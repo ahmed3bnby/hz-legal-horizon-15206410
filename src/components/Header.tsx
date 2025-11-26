@@ -26,13 +26,13 @@ const Header = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-cream/95 backdrop-blur supports-[backdrop-filter]:bg-cream/90 shadow-md">
+    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/90 shadow-sm">
       <nav className="container mx-auto flex h-16 md:h-20 items-center justify-between px-4">
         {/* Logo */}
         <Link to="/" className="flex items-center space-x-3 rtl:space-x-reverse">
-          <div className="flex flex-col">
-            <span className="text-xl md:text-2xl font-serif font-bold tracking-tight text-navy">HZ Legal</span>
-            <span className="text-xs text-accent uppercase tracking-widest">Consultancy</span>
+          <div className="flex flex-col items-start rtl:items-end">
+            <span className="text-xl md:text-2xl font-serif font-bold tracking-tight text-primary">HZ Legal</span>
+            <span className="text-xs text-gold uppercase tracking-widest font-semibold">Consultancy</span>
           </div>
         </Link>
 

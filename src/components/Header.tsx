@@ -37,7 +37,7 @@ const Header = () => {
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden lg:flex items-center space-x-8">
+        <div className="hidden lg:flex items-center space-x-8 rtl:space-x-reverse">
           <NavigationMenu>
             <NavigationMenuList className="space-x-2">
               <NavigationMenuItem>

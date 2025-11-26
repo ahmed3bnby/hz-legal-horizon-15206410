@@ -3,92 +3,74 @@ import Footer from "@/components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Building2, Briefcase, FileText, Gavel, Users, Shield, Landmark, TrendingUp } from "lucide-react";
-
-const services = [
-  {
-    icon: Building2,
-    title: "Corporate & Commercial Law",
-    description: "Company incorporation (LLC, JSC, partnerships), commercial registration, investment incentives, and business restructuring under Egyptian Companies Law.",
-  },
-  {
-    icon: Briefcase,
-    title: "Foreign Investment Advisory",
-    description: "Investment Law compliance, GAFI registration, free zone establishment, incentives optimization, and foreign investor legal support.",
-  },
-  {
-    icon: FileText,
-    title: "Contracts & Agreements",
-    description: "Commercial contracts drafting and negotiation under Egyptian Civil Code. Agency, distribution, franchise, and partnership agreements.",
-  },
-  {
-    icon: Gavel,
-    title: "Litigation & Arbitration",
-    description: "Representation before Egyptian courts and Cairo Regional Centre for International Commercial Arbitration (CRCICA). Dispute resolution expertise.",
-  },
-  {
-    icon: Landmark,
-    title: "Banking & Finance",
-    description: "Banking transactions, financing agreements, security documentation, Central Bank compliance, and financial regulatory matters.",
-  },
-  {
-    icon: TrendingUp,
-    title: "Capital Markets",
-    description: "Capital market transactions, Egyptian Exchange listings, securities regulations, and investment fund establishment.",
-  },
-  {
-    icon: Users,
-    title: "Employment Law",
-    description: "Employment contracts, Labor Law compliance, social insurance, work permits, collective agreements, and labor dispute resolution.",
-  },
-  {
-    icon: Shield,
-    title: "Tax & Regulatory",
-    description: "Tax structuring, Egyptian Tax Authority dealings, customs, VAT compliance, transfer pricing, and regulatory advisory services.",
-  },
-];
+import { useTranslation } from "react-i18next";
+import heroImage from "@/assets/hero-egypt.jpg";
 
 const Egypt = () => {
+  const { t } = useTranslation();
+
+  const services = [
+    { icon: Building2, titleKey: "service1Title", descKey: "service1Desc" },
+    { icon: Briefcase, titleKey: "service2Title", descKey: "service2Desc" },
+    { icon: FileText, titleKey: "service3Title", descKey: "service3Desc" },
+    { icon: Gavel, titleKey: "service4Title", descKey: "service4Desc" },
+    { icon: Landmark, titleKey: "service5Title", descKey: "service5Desc" },
+    { icon: TrendingUp, titleKey: "service6Title", descKey: "service6Desc" },
+    { icon: Users, titleKey: "service7Title", descKey: "service7Desc" },
+    { icon: Shield, titleKey: "service8Title", descKey: "service8Desc" },
+  ];
+
   return (
     <div className="min-h-screen">
       <Header />
       <main>
-        {/* Hero */}
-        <section className="py-20 bg-gradient-hero text-primary-foreground">
-          <div className="container mx-auto px-4">
+        {/* Hero with Image */}
+        <section className="relative py-32 md:py-40 overflow-hidden">
+          <div className="absolute inset-0">
+            <img 
+              src={heroImage} 
+              alt="Egypt pyramids and Cairo" 
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-navy/95 to-navy/75"></div>
+          </div>
+          <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-3xl">
-              <span className="inline-block px-4 py-2 rounded-full bg-accent/20 backdrop-blur-sm border border-accent/30 text-sm font-medium mb-6">
-                Egypt Office
+              <span className="inline-block px-4 py-2 rounded-full bg-accent/20 backdrop-blur-sm border border-accent/30 text-sm font-medium mb-6 text-cream">
+                {t('pages.egypt.office')}
               </span>
-              <h1 className="text-5xl md:text-6xl font-serif font-bold mb-6 leading-tight">
-                Legal Services in Egypt
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold mb-6 leading-tight text-cream">
+                {t('pages.egypt.title')}
               </h1>
-              <p className="text-xl text-primary-foreground/90 leading-relaxed">
-                Comprehensive legal services for businesses operating in Egypt's dynamic market. Expert guidance through Egyptian commercial law, investment regulations, and business environment.
+              <p className="text-lg md:text-xl text-cream/90 leading-relaxed">
+                {t('pages.egypt.subtitle')}
               </p>
             </div>
           </div>
         </section>
 
         {/* Why Egypt */}
-        <section className="py-20 bg-background">
+        <section className="py-16 md:py-20 bg-background">
           <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto mb-16">
-              <h2 className="text-4xl font-serif font-bold mb-6">Egypt Legal Expertise</h2>
-              <p className="text-lg text-muted-foreground leading-relaxed mb-8">
-                Egypt represents one of Africa's largest markets with over 100 million consumers, strategic location connecting Africa, Asia, and Europe, and significant economic reforms attracting foreign investment. Our Egypt office provides comprehensive legal services navigating Egyptian regulations, customs, and business practices with deep local expertise and international standards.
+            <div className="max-w-4xl mx-auto mb-12 md:mb-16">
+              <h2 className="text-3xl md:text-4xl font-serif font-bold mb-6 text-center md:text-start">
+                {t('pages.egypt.whyTitle')}
+              </h2>
+              <p className="text-base md:text-lg text-muted-foreground leading-relaxed mb-8">
+                {t('pages.egypt.whyDescription')}
               </p>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="text-center">
-                  <div className="text-4xl font-bold text-accent mb-2">180+</div>
-                  <div className="text-sm text-muted-foreground">Egyptian Clients</div>
+                <div className="text-center p-6 rounded-lg bg-muted/30">
+                  <div className="text-3xl md:text-4xl font-bold text-accent mb-2">{t('pages.egypt.stat1')}</div>
+                  <div className="text-sm text-muted-foreground">{t('pages.egypt.stat1Label')}</div>
                 </div>
-                <div className="text-center">
-                  <div className="text-4xl font-bold text-accent mb-2">60+</div>
-                  <div className="text-sm text-muted-foreground">Investment Projects</div>
+                <div className="text-center p-6 rounded-lg bg-muted/30">
+                  <div className="text-3xl md:text-4xl font-bold text-accent mb-2">{t('pages.egypt.stat2')}</div>
+                  <div className="text-sm text-muted-foreground">{t('pages.egypt.stat2Label')}</div>
                 </div>
-                <div className="text-center">
-                  <div className="text-4xl font-bold text-accent mb-2">12+</div>
-                  <div className="text-sm text-muted-foreground">Years Experience</div>
+                <div className="text-center p-6 rounded-lg bg-muted/30">
+                  <div className="text-3xl md:text-4xl font-bold text-accent mb-2">{t('pages.egypt.stat3')}</div>
+                  <div className="text-sm text-muted-foreground">{t('pages.egypt.stat3Label')}</div>
                 </div>
               </div>
             </div>
@@ -96,18 +78,24 @@ const Egypt = () => {
         </section>
 
         {/* Services Grid */}
-        <section className="py-20 bg-muted/30">
+        <section className="py-16 md:py-20 bg-muted/30">
           <div className="container mx-auto px-4">
-            <h2 className="text-4xl font-serif font-bold mb-12 text-center">Our Egypt Services</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <h2 className="text-3xl md:text-4xl font-serif font-bold mb-8 md:mb-12 text-center">
+              {t('pages.egypt.servicesTitle')}
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
               {services.map((service, index) => (
                 <Card key={index} className="border-border/50 hover:border-accent/50 transition-all duration-300 hover:shadow-lg">
                   <CardContent className="p-6">
                     <div className="w-14 h-14 rounded-lg bg-accent/10 flex items-center justify-center mb-4">
                       <service.icon className="h-7 w-7 text-accent" />
                     </div>
-                    <h3 className="text-xl font-semibold mb-3">{service.title}</h3>
-                    <p className="text-muted-foreground leading-relaxed">{service.description}</p>
+                    <h3 className="text-lg md:text-xl font-semibold mb-3">
+                      {t(`pages.egypt.${service.titleKey}`)}
+                    </h3>
+                    <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
+                      {t(`pages.egypt.${service.descKey}`)}
+                    </p>
                   </CardContent>
                 </Card>
               ))}
@@ -116,20 +104,20 @@ const Egypt = () => {
         </section>
 
         {/* CTA */}
-        <section className="py-20 bg-gradient-hero text-primary-foreground">
+        <section className="py-16 md:py-20 bg-gradient-hero text-primary-foreground">
           <div className="container mx-auto px-4 text-center">
-            <h2 className="text-4xl font-serif font-bold mb-6">
-              Investing in Egypt?
+            <h2 className="text-3xl md:text-4xl font-serif font-bold mb-4 md:mb-6 text-cream">
+              {t('pages.egypt.ctaTitle')}
             </h2>
-            <p className="text-xl text-primary-foreground/90 mb-8 max-w-2xl mx-auto">
-              Get expert legal counsel from our Cairo office
+            <p className="text-lg md:text-xl text-cream/90 mb-6 md:mb-8 max-w-2xl mx-auto">
+              {t('pages.egypt.ctaSubtitle')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-gold">
-                Request Consultation
+                {t('pages.egypt.ctaButton')}
               </Button>
-              <Button size="lg" variant="outline" className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10">
-                Call Egypt Office
+              <Button size="lg" variant="outline" className="border-cream/30 text-cream hover:bg-cream/10">
+                {t('pages.egypt.ctaButton2')}
               </Button>
             </div>
           </div>

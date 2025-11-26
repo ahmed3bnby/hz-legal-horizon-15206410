@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { Menu, X, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
+import { useAuth } from "@/hooks/useAuth";
 import LanguageSwitcher from "./LanguageSwitcher";
 import {
   NavigationMenu,
@@ -16,6 +17,13 @@ import {
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { t } = useTranslation();
+  const { user, isAdmin, signOut } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate("/");
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -156,21 +164,30 @@ const Header = () => {
                 </Link>
               </NavigationMenuItem>
 
-              <NavigationMenuItem>
-                <Link to="/dashboard">
-                  <NavigationMenuLink className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50">
-                    {t('nav.dashboard')}
-                  </NavigationMenuLink>
-                </Link>
-              </NavigationMenuItem>
+              {isAdmin && (
+                <NavigationMenuItem>
+                  <Link to="/dashboard">
+                    <NavigationMenuLink className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50">
+                      {t('nav.dashboard')}
+                    </NavigationMenuLink>
+                  </Link>
+                </NavigationMenuItem>
+              )}
             </NavigationMenuList>
           </NavigationMenu>
 
           <div className="flex items-center gap-2">
             <LanguageSwitcher />
-            <Button variant="default" size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90">
-              {t('hero.cta')}
-            </Button>
+            {user ? (
+              <Button variant="outline" size="sm" onClick={handleSignOut}>
+                <LogOut className="h-4 w-4 mr-2" />
+                {t('nav.logout')}
+              </Button>
+            ) : (
+              <Button variant="default" size="sm" asChild className="bg-primary text-primary-foreground hover:bg-primary/90">
+                <Link to="/auth">{t('nav.login')}</Link>
+              </Button>
+            )}
           </div>
         </div>
 
@@ -195,10 +212,19 @@ const Header = () => {
             <Link to="/contact" className="block py-2 text-sm font-medium">{t('nav.contact')}</Link>
             <Link to="/careers" className="block py-2 text-sm font-medium">{t('nav.careers')}</Link>
             <Link to="/store" className="block py-2 text-sm font-medium text-accent">{t('nav.store')}</Link>
-            <Link to="/dashboard" className="block py-2 text-sm font-medium">{t('nav.dashboard')}</Link>
-            <Button variant="default" size="sm" className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
-              {t('hero.cta')}
-            </Button>
+            {isAdmin && (
+              <Link to="/dashboard" className="block py-2 text-sm font-medium">{t('nav.dashboard')}</Link>
+            )}
+            {user ? (
+              <Button variant="outline" size="sm" onClick={handleSignOut} className="w-full">
+                <LogOut className="h-4 w-4 mr-2" />
+                {t('nav.logout')}
+              </Button>
+            ) : (
+              <Button variant="default" size="sm" asChild className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
+                <Link to="/auth">{t('nav.login')}</Link>
+              </Button>
+            )}
           </div>
         </div>
       )}

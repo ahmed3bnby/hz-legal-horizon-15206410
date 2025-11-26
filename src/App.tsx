@@ -3,11 +3,14 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import "./i18n/config";
 import Index from "./pages/Index";
 import About from "./pages/About";
 import ContactPage from "./pages/ContactPage";
 import Careers from "./pages/Careers";
 import Store from "./pages/Store";
+import Blog from "./pages/Blog";
+import Dashboard from "./pages/Dashboard";
 import Dubai from "./pages/services/Dubai";
 import Sharjah from "./pages/services/Sharjah";
 import Egypt from "./pages/services/Egypt";
@@ -30,6 +33,8 @@ const App = () => (
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/careers" element={<Careers />} />
           <Route path="/store" element={<Store />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           
           {/* Services Routes */}
           <Route path="/services/dubai" element={<Dubai />} />

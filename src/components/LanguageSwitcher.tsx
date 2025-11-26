@@ -15,6 +15,12 @@ const LanguageSwitcher = () => {
     i18n.changeLanguage(lng);
     document.documentElement.dir = lng === 'ar' ? 'rtl' : 'ltr';
     document.documentElement.lang = lng;
+    // Apply Arabic font class
+    if (lng === 'ar') {
+      document.body.classList.add('font-arabic');
+    } else {
+      document.body.classList.remove('font-arabic');
+    }
   };
 
   return (

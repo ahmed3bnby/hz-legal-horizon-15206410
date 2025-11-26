@@ -26,13 +26,13 @@ const Header = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <nav className="container mx-auto flex h-20 items-center justify-between px-4">
+    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-cream/95 backdrop-blur supports-[backdrop-filter]:bg-cream/90 shadow-md">
+      <nav className="container mx-auto flex h-16 md:h-20 items-center justify-between px-4">
         {/* Logo */}
-        <Link to="/" className="flex items-center space-x-3">
+        <Link to="/" className="flex items-center space-x-3 rtl:space-x-reverse">
           <div className="flex flex-col">
-            <span className="text-2xl font-serif font-bold tracking-tight">HZ Legal</span>
-            <span className="text-xs text-muted-foreground uppercase tracking-widest">Consultancy</span>
+            <span className="text-xl md:text-2xl font-serif font-bold tracking-tight text-navy">HZ Legal</span>
+            <span className="text-xs text-accent uppercase tracking-widest">Consultancy</span>
           </div>
         </Link>
 
@@ -180,11 +180,11 @@ const Header = () => {
             <LanguageSwitcher />
             {user ? (
               <Button variant="outline" size="sm" onClick={handleSignOut}>
-                <LogOut className="h-4 w-4 mr-2" />
+                <LogOut className="h-4 w-4 mr-2 rtl:mr-0 rtl:ml-2" />
                 {t('nav.logout')}
               </Button>
             ) : (
-              <Button variant="default" size="sm" asChild className="bg-primary text-primary-foreground hover:bg-primary/90">
+              <Button variant="default" size="sm" asChild>
                 <Link to="/auth">{t('nav.login')}</Link>
               </Button>
             )}

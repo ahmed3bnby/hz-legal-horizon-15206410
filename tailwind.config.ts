@@ -52,17 +52,21 @@ export default {
           light: "hsl(var(--gold-light))",
           dark: "hsl(var(--gold-dark))",
         },
-        gray: {
-          50: "hsl(var(--gray-50))",
-          100: "hsl(var(--gray-100))",
-          200: "hsl(var(--gray-200))",
-          800: "hsl(var(--gray-800))",
-          900: "hsl(var(--gray-900))",
+        navy: {
+          DEFAULT: "hsl(var(--navy))",
+          light: "hsl(var(--navy-light))",
+          dark: "hsl(var(--navy-dark))",
+        },
+        cream: {
+          DEFAULT: "hsl(var(--cream))",
+          light: "hsl(var(--cream-light))",
+          dark: "hsl(var(--cream-dark))",
         },
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
         serif: ['Playfair Display', 'Georgia', 'serif'],
+        arabic: ['Tajawal', 'system-ui', 'sans-serif'],
       },
       backgroundImage: {
         'gradient-hero': 'var(--gradient-hero)',

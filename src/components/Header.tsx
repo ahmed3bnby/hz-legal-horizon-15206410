@@ -26,20 +26,20 @@ const Header = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/90 shadow-sm">
+    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/90 shadow-sm" dir="ltr">
       <nav className="container mx-auto flex h-16 md:h-20 items-center justify-between px-4">
         {/* Logo */}
-        <Link to="/" className="flex items-center space-x-3 rtl:space-x-reverse">
-          <div className="flex flex-col items-start rtl:items-end">
+        <Link to="/" className="flex items-center space-x-3">
+          <div className="flex flex-col items-start">
             <span className="text-xl md:text-2xl font-serif font-bold tracking-tight text-primary">HZ Legal</span>
             <span className="text-xs text-gold uppercase tracking-widest font-semibold">Consultancy</span>
           </div>
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden lg:flex items-center space-x-8 rtl:space-x-reverse">
+        <div className="hidden lg:flex items-center space-x-8">
           <NavigationMenu>
-            <NavigationMenuList className="space-x-2">
+            <NavigationMenuList className="space-x-2 rtl:space-x-reverse">
               <NavigationMenuItem>
                 <Link to="/">
                   <NavigationMenuLink className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50">
@@ -180,7 +180,7 @@ const Header = () => {
             <LanguageSwitcher />
             {user ? (
               <Button variant="outline" size="sm" onClick={handleSignOut}>
-                <LogOut className="h-4 w-4 mr-2 rtl:mr-0 rtl:ml-2" />
+                <LogOut className="h-4 w-4 ltr:mr-2 rtl:ml-2" />
                 {t('nav.logout')}
               </Button>
             ) : (
@@ -217,7 +217,7 @@ const Header = () => {
             )}
             {user ? (
               <Button variant="outline" size="sm" onClick={handleSignOut} className="w-full">
-                <LogOut className="h-4 w-4 mr-2" />
+                <LogOut className="h-4 w-4 ltr:mr-2 rtl:ml-2" />
                 {t('nav.logout')}
               </Button>
             ) : (

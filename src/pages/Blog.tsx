@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Search, Calendar, User, Video, FileText } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const blogPosts = [
   {
@@ -59,6 +60,7 @@ const blogPosts = [
 ];
 
 const Blog = () => {
+  const { t, i18n } = useTranslation();
   const [searchTerm, setSearchTerm] = useState("");
 
   const filteredPosts = blogPosts.filter(post =>
@@ -71,21 +73,23 @@ const Blog = () => {
       <Header />
       <main>
         {/* Hero */}
-        <section className="py-20 bg-gradient-hero text-primary-foreground">
+        <section className="py-16 md:py-20 bg-gradient-hero text-primary-foreground">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center">
-              <h1 className="text-5xl md:text-6xl font-serif font-bold mb-6">Legal Insights Blog</h1>
-              <p className="text-xl text-primary-foreground/90 leading-relaxed mb-8">
-                Expert perspectives, analysis, and insights from Dr. Hassan Zayed on legal matters across the MENA region
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold mb-4 md:mb-6 text-cream">
+                {t('blog.title')}
+              </h1>
+              <p className="text-lg md:text-xl text-cream/90 leading-relaxed mb-6 md:mb-8">
+                {t('blog.subtitle')}
               </p>
               
               {/* Search */}
               <div className="relative max-w-xl mx-auto">
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                <Search className="absolute ltr:left-4 rtl:right-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                 <Input
                   type="text"
-                  placeholder="Search articles, videos, insights..."
-                  className="pl-12 h-14 bg-background text-foreground"
+                  placeholder={t('blog.searchPlaceholder')}
+                  className="ltr:pl-12 rtl:pr-12 h-12 md:h-14 bg-background text-foreground"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
@@ -95,25 +99,25 @@ const Blog = () => {
         </section>
 
         {/* Blog Posts Grid */}
-        <section className="py-20">
+        <section className="py-16 md:py-20">
           <div className="container mx-auto px-4">
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
               {filteredPosts.map((post) => (
                 <Card key={post.id} className="overflow-hidden hover:shadow-gold transition-all duration-300 group cursor-pointer">
                   <div className="relative h-48 overflow-hidden">
                     <img
                       src={post.image}
-                      alt={post.title}
+                      alt={i18n.language === 'ar' ? post.titleAr : post.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
-                    <div className="absolute top-4 right-4">
-                      <Badge variant="secondary" className="bg-accent text-accent-foreground">
-                        {post.category}
+                    <div className="absolute top-4 ltr:right-4 rtl:left-4">
+                      <Badge variant="secondary" className="bg-gold text-white">
+                        {i18n.language === 'ar' ? post.categoryAr : post.category}
                       </Badge>
                     </div>
                     {post.type === 'video' && (
                       <div className="absolute inset-0 flex items-center justify-center bg-primary/20">
-                        <Video className="h-12 w-12 text-primary-foreground" />
+                        <Video className="h-12 w-12 text-cream" />
                       </div>
                     )}
                   </div>
@@ -128,17 +132,17 @@ const Blog = () => {
                         <span>{post.author}</span>
                       </div>
                     </div>
-                    <CardTitle className="line-clamp-2 group-hover:text-accent transition-colors">
-                      {post.title}
+                    <CardTitle className="line-clamp-2 group-hover:text-gold transition-colors">
+                      {i18n.language === 'ar' ? post.titleAr : post.title}
                     </CardTitle>
                     <CardDescription className="line-clamp-3">
                       {post.excerpt}
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <Button variant="outline" className="w-full group-hover:bg-accent group-hover:text-accent-foreground group-hover:border-accent">
-                      <FileText className="h-4 w-4 mr-2" />
-                      Read More
+                    <Button variant="outline" className="w-full group-hover:bg-gold group-hover:text-white group-hover:border-gold">
+                      <FileText className="h-4 w-4 ltr:mr-2 rtl:ml-2" />
+                      {t('blog.readMore')}
                     </Button>
                   </CardContent>
                 </Card>
@@ -147,7 +151,7 @@ const Blog = () => {
 
             {filteredPosts.length === 0 && (
               <div className="text-center py-20">
-                <p className="text-lg text-muted-foreground">No articles found matching your search.</p>
+                <p className="text-base md:text-lg text-muted-foreground">{t('blog.noResults')}</p>
               </div>
             )}
           </div>

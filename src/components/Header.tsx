@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "react-i18next";
+import LanguageSwitcher from "./LanguageSwitcher";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -13,6 +15,7 @@ import {
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { t } = useTranslation();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -32,19 +35,19 @@ const Header = () => {
               <NavigationMenuItem>
                 <Link to="/">
                   <NavigationMenuLink className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50">
-                    Home
+                    {t('nav.home')}
                   </NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>
 
               <NavigationMenuItem>
-                <NavigationMenuTrigger>Our Services</NavigationMenuTrigger>
+                <NavigationMenuTrigger>{t('nav.services')}</NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2">
                     <li>
                       <Link to="/services/dubai">
                         <NavigationMenuLink className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
-                          <div className="text-sm font-medium leading-none">Dubai</div>
+                          <div className="text-sm font-medium leading-none">{t('services.dubai')}</div>
                           <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
                             Legal services in Dubai
                           </p>
@@ -54,7 +57,7 @@ const Header = () => {
                     <li>
                       <Link to="/services/sharjah">
                         <NavigationMenuLink className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
-                          <div className="text-sm font-medium leading-none">Sharjah</div>
+                          <div className="text-sm font-medium leading-none">{t('services.sharjah')}</div>
                           <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
                             Legal services in Sharjah
                           </p>
@@ -64,7 +67,7 @@ const Header = () => {
                     <li>
                       <Link to="/services/egypt">
                         <NavigationMenuLink className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
-                          <div className="text-sm font-medium leading-none">Egypt</div>
+                          <div className="text-sm font-medium leading-none">{t('services.egypt')}</div>
                           <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
                             Legal services in Egypt
                           </p>
@@ -76,13 +79,13 @@ const Header = () => {
               </NavigationMenuItem>
 
               <NavigationMenuItem>
-                <NavigationMenuTrigger>Our Knowledge</NavigationMenuTrigger>
+                <NavigationMenuTrigger>{t('nav.knowledge')}</NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2">
                     <li>
                       <Link to="/knowledge/news">
                         <NavigationMenuLink className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
-                          <div className="text-sm font-medium leading-none">News</div>
+                          <div className="text-sm font-medium leading-none">{t('knowledge.news')}</div>
                           <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
                             Latest legal news
                           </p>
@@ -92,7 +95,7 @@ const Header = () => {
                     <li>
                       <Link to="/knowledge/books">
                         <NavigationMenuLink className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
-                          <div className="text-sm font-medium leading-none">Books</div>
+                          <div className="text-sm font-medium leading-none">{t('knowledge.books')}</div>
                           <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
                             Legal publications
                           </p>
@@ -102,7 +105,7 @@ const Header = () => {
                     <li>
                       <Link to="/knowledge/updates">
                         <NavigationMenuLink className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
-                          <div className="text-sm font-medium leading-none">Law Updates</div>
+                          <div className="text-sm font-medium leading-none">{t('knowledge.updates')}</div>
                           <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
                             Recent legal changes
                           </p>
@@ -116,7 +119,15 @@ const Header = () => {
               <NavigationMenuItem>
                 <Link to="/about">
                   <NavigationMenuLink className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50">
-                    About Us
+                    {t('nav.about')}
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuItem>
+
+              <NavigationMenuItem>
+                <Link to="/blog">
+                  <NavigationMenuLink className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50">
+                    {t('nav.blog')}
                   </NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>
@@ -124,7 +135,7 @@ const Header = () => {
               <NavigationMenuItem>
                 <Link to="/contact">
                   <NavigationMenuLink className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50">
-                    Contact Us
+                    {t('nav.contact')}
                   </NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>
@@ -132,7 +143,7 @@ const Header = () => {
               <NavigationMenuItem>
                 <Link to="/careers">
                   <NavigationMenuLink className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50">
-                    Join Us
+                    {t('nav.careers')}
                   </NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>
@@ -140,40 +151,53 @@ const Header = () => {
               <NavigationMenuItem>
                 <Link to="/store">
                   <NavigationMenuLink className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-accent text-accent-foreground px-4 py-2 text-sm font-medium transition-colors hover:bg-accent/90">
-                    Books Store
+                    {t('nav.store')}
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuItem>
+
+              <NavigationMenuItem>
+                <Link to="/dashboard">
+                  <NavigationMenuLink className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50">
+                    {t('nav.dashboard')}
                   </NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
 
-          <Button variant="default" size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90">
-            Get Consultation
-          </Button>
+          <div className="flex items-center gap-2">
+            <LanguageSwitcher />
+            <Button variant="default" size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90">
+              {t('hero.cta')}
+            </Button>
+          </div>
         </div>
 
         {/* Mobile Menu Button */}
-        <button
-          className="lg:hidden"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-        >
-          {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-        </button>
+        <div className="lg:hidden flex items-center gap-2">
+          <LanguageSwitcher />
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
+        </div>
       </nav>
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div className="lg:hidden border-t border-border/40 bg-background">
           <div className="container mx-auto px-4 py-4 space-y-3">
-            <Link to="/" className="block py-2 text-sm font-medium">Home</Link>
-            <Link to="/services" className="block py-2 text-sm font-medium">Our Services</Link>
-            <Link to="/knowledge" className="block py-2 text-sm font-medium">Our Knowledge</Link>
-            <Link to="/about" className="block py-2 text-sm font-medium">About Us</Link>
-            <Link to="/contact" className="block py-2 text-sm font-medium">Contact Us</Link>
-            <Link to="/careers" className="block py-2 text-sm font-medium">Join Us</Link>
-            <Link to="/store" className="block py-2 text-sm font-medium text-accent">Books Store</Link>
+            <Link to="/" className="block py-2 text-sm font-medium">{t('nav.home')}</Link>
+            <Link to="/about" className="block py-2 text-sm font-medium">{t('nav.about')}</Link>
+            <Link to="/blog" className="block py-2 text-sm font-medium">{t('nav.blog')}</Link>
+            <Link to="/contact" className="block py-2 text-sm font-medium">{t('nav.contact')}</Link>
+            <Link to="/careers" className="block py-2 text-sm font-medium">{t('nav.careers')}</Link>
+            <Link to="/store" className="block py-2 text-sm font-medium text-accent">{t('nav.store')}</Link>
+            <Link to="/dashboard" className="block py-2 text-sm font-medium">{t('nav.dashboard')}</Link>
             <Button variant="default" size="sm" className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
-              Get Consultation
+              {t('hero.cta')}
             </Button>
           </div>
         </div>

@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Contact from "@/components/home/Contact";
+import Map from "@/components/Map";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
 
 const ContactPage = () => {
@@ -22,6 +23,17 @@ const ContactPage = () => {
 
         {/* Contact Form Section */}
         <Contact />
+
+        {/* Office Locations Map */}
+        <section className="py-20">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-serif font-bold mb-4">Our Office Locations</h2>
+              <p className="text-lg text-muted-foreground">Visit us at any of our offices across Dubai, Sharjah, and Egypt</p>
+            </div>
+            <Map />
+          </div>
+        </section>
 
         {/* Office Hours */}
         <section className="py-20 bg-muted/30">

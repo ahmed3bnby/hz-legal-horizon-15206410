@@ -73,7 +73,7 @@ const Careers = () => {
             <div className="max-w-3xl mx-auto text-center">
               <h1 className="text-5xl md:text-6xl font-serif font-bold mb-6 text-white">Join Our Team</h1>
               <p className="text-xl text-white/90 leading-relaxed">
-                Build your legal career with HZ Legal Consultancy. We're looking for talented legal professionals passionate about excellence.
+                Build your legal career with MK Legal Consultancy. We're looking for talented legal professionals passionate about excellence.
               </p>
             </div>
           </div>
@@ -82,7 +82,7 @@ const Careers = () => {
         {/* Why Join Us */}
         <section className="py-20 bg-background">
           <div className="container mx-auto px-4">
-            <h2 className="text-4xl font-serif font-bold mb-12 text-center">Why Join HZ Legal</h2>
+            <h2 className="text-4xl font-serif font-bold mb-12 text-center">Why Join MK Legal</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
               <div className="text-center">
                 <div className="w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center mx-auto mb-4">
@@ -249,7 +249,7 @@ const Careers = () => {
                       <Textarea
                         value={formData.coverLetter}
                         onChange={(e) => setFormData({ ...formData, coverLetter: e.target.value })}
-                        placeholder="Tell us why you want to join HZ Legal..."
+                        placeholder="Tell us why you want to join MK Legal..."
                         rows={6}
                         required
                       />

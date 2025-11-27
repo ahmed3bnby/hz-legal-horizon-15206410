@@ -145,7 +145,7 @@ const Auth = () => {
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <div className="mb-4">
-            <h1 className="text-3xl font-serif font-bold">HZ Legal</h1>
+            <h1 className="text-3xl font-serif font-bold">MK Legal</h1>
             <p className="text-sm text-muted-foreground uppercase tracking-widest">Consultancy</p>
           </div>
         </CardHeader>

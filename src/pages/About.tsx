@@ -15,12 +15,12 @@ const About = () => {
         <section className="py-16 md:py-20 bg-gradient-hero text-primary-foreground">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold mb-4 md:mb-6 text-cream">
-                {t('about.title')}
-              </h1>
-              <p className="text-lg md:text-xl text-cream/90 leading-relaxed">
-                {t('about.subtitle')}
-              </p>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold mb-4 md:mb-6 text-white">
+            {t('about.title')}
+          </h1>
+          <p className="text-lg md:text-xl text-white/90 leading-relaxed">
+            {t('about.subtitle')}
+          </p>
             </div>
           </div>
         </section>
@@ -154,11 +154,11 @@ const About = () => {
         </section>
 
         {/* Accreditations */}
-        <section className="py-16 md:py-20 bg-gradient-subtle">
+        <section className="py-16 md:py-20 bg-muted/30">
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
-              <Users className="h-12 w-12 md:h-16 md:w-16 text-gold mx-auto mb-4 md:mb-6" />
-              <h2 className="text-3xl md:text-4xl font-serif font-bold mb-4 md:mb-6">
+              <Users className="h-12 w-12 md:h-16 md:w-16 text-accent mx-auto mb-4 md:mb-6" />
+              <h2 className="text-3xl md:text-4xl font-serif font-bold mb-4 md:mb-6 text-foreground">
                 {t('about.accreditationsTitle')}
               </h2>
               <p className="text-base md:text-lg text-muted-foreground leading-relaxed">

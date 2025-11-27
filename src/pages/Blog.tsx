@@ -111,7 +111,7 @@ const Blog = () => {
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                     <div className="absolute top-4 ltr:right-4 rtl:left-4">
-                      <Badge variant="secondary" className="bg-gold text-white">
+                      <Badge variant="secondary" className="bg-accent text-accent-foreground">
                         {i18n.language === 'ar' ? post.categoryAr : post.category}
                       </Badge>
                     </div>
@@ -140,7 +140,7 @@ const Blog = () => {
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <Button variant="outline" className="w-full group-hover:bg-gold group-hover:text-white group-hover:border-gold">
+                    <Button variant="outline" className="w-full group-hover:bg-accent group-hover:text-accent-foreground group-hover:border-accent">
                       <FileText className="h-4 w-4 ltr:mr-2 rtl:ml-2" />
                       {t('blog.readMore')}
                     </Button>

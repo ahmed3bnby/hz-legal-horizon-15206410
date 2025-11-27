@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,53 +8,304 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { BookOpen, FileText, Newspaper, Briefcase, Upload, Plus } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { BookOpen, FileText, Newspaper, Briefcase, Trash2, Edit } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
+
+interface BlogPost {
+  id: string;
+  title: string;
+  content: string;
+  category: string | null;
+  published: boolean;
+  created_at: string;
+}
+
+interface NewsItem {
+  id: string;
+  title: string;
+  content: string;
+  category: string | null;
+  published: boolean;
+  created_at: string;
+}
+
+interface Book {
+  id: string;
+  title: string;
+  author: string;
+  description: string | null;
+  category: string | null;
+  created_at: string;
+}
+
+interface LawUpdate {
+  id: string;
+  title: string;
+  content: string;
+  category: string | null;
+  jurisdiction: string | null;
+  created_at: string;
+}
 
 const Dashboard = () => {
   const { toast } = useToast();
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("blog");
+  
+  // State for data
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
+  const [news, setNews] = useState<NewsItem[]>([]);
+  const [books, setBooks] = useState<Book[]>([]);
+  const [lawUpdates, setLawUpdates] = useState<LawUpdate[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const handleSubmit = (e: React.FormEvent, type: string) => {
-    e.preventDefault();
-    toast({
-      title: "Success!",
-      description: `${type} has been saved successfully.`,
-    });
+  // Load data on mount
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const loadData = async () => {
+    try {
+      const [blogRes, newsRes, booksRes, updatesRes] = await Promise.all([
+        supabase.from('blog_posts').select('*').order('created_at', { ascending: false }),
+        supabase.from('news').select('*').order('created_at', { ascending: false }),
+        supabase.from('books').select('*').order('created_at', { ascending: false }),
+        supabase.from('law_updates').select('*').order('created_at', { ascending: false }),
+      ]);
+
+      if (blogRes.data) setBlogPosts(blogRes.data);
+      if (newsRes.data) setNews(newsRes.data);
+      if (booksRes.data) setBooks(booksRes.data);
+      if (updatesRes.data) setLawUpdates(updatesRes.data);
+    } catch (error) {
+      console.error('Error loading data:', error);
+      toast({
+        title: "Error",
+        description: "Failed to load data",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
+
+  const handleBlogSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    
+    try {
+      const { error } = await supabase.from('blog_posts').insert({
+        title: formData.get('title') as string,
+        content: formData.get('content') as string,
+        category: formData.get('category') as string,
+        author_id: user?.id,
+        published: false,
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Success!",
+        description: "Blog post created successfully.",
+      });
+      
+      e.currentTarget.reset();
+      loadData();
+    } catch (error) {
+      console.error('Error creating blog post:', error);
+      toast({
+        title: "Error",
+        description: "Failed to create blog post",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleNewsSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    
+    try {
+      const { error } = await supabase.from('news').insert({
+        title: formData.get('title') as string,
+        content: formData.get('content') as string,
+        category: formData.get('category') as string,
+        author_id: user?.id,
+        published: false,
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Success!",
+        description: "News article created successfully.",
+      });
+      
+      e.currentTarget.reset();
+      loadData();
+    } catch (error) {
+      console.error('Error creating news:', error);
+      toast({
+        title: "Error",
+        description: "Failed to create news article",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleBookSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    
+    try {
+      const { error } = await supabase.from('books').insert({
+        title: formData.get('title') as string,
+        author: formData.get('author') as string,
+        description: formData.get('description') as string,
+        category: formData.get('category') as string,
+        added_by: user?.id,
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Success!",
+        description: "Book added successfully.",
+      });
+      
+      e.currentTarget.reset();
+      loadData();
+    } catch (error) {
+      console.error('Error adding book:', error);
+      toast({
+        title: "Error",
+        description: "Failed to add book",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleUpdateSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    
+    try {
+      const { error } = await supabase.from('law_updates').insert({
+        title: formData.get('title') as string,
+        content: formData.get('content') as string,
+        category: formData.get('category') as string,
+        jurisdiction: formData.get('jurisdiction') as string,
+        added_by: user?.id,
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Success!",
+        description: "Law update published successfully.",
+      });
+      
+      e.currentTarget.reset();
+      loadData();
+    } catch (error) {
+      console.error('Error creating law update:', error);
+      toast({
+        title: "Error",
+        description: "Failed to create law update",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const togglePublished = async (id: string, table: 'blog_posts' | 'news', currentStatus: boolean) => {
+    try {
+      const { error } = await supabase
+        .from(table)
+        .update({ published: !currentStatus })
+        .eq('id', id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success!",
+        description: `Post ${!currentStatus ? 'published' : 'unpublished'} successfully.`,
+      });
+      
+      loadData();
+    } catch (error) {
+      console.error('Error updating status:', error);
+      toast({
+        title: "Error",
+        description: "Failed to update status",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleDelete = async (id: string, table: 'blog_posts' | 'news' | 'books' | 'law_updates') => {
+    if (!confirm('Are you sure you want to delete this item?')) return;
+    
+    try {
+      const { error } = await supabase.from(table).delete().eq('id', id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Success!",
+        description: "Item deleted successfully.",
+      });
+      
+      loadData();
+    } catch (error) {
+      console.error('Error deleting item:', error);
+      toast({
+        title: "Error",
+        description: "Failed to delete item",
+        variant: "destructive",
+      });
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-lg">Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen">
       <Header />
-      <main className="py-20 bg-muted/30">
+      <main className="py-20 bg-background">
         <div className="container mx-auto px-4">
           <div className="mb-8">
-            <h1 className="text-4xl font-serif font-bold mb-2">Content Management Dashboard</h1>
-            <p className="text-muted-foreground">Manage your legal content, blog posts, and publications</p>
+            <h1 className="text-4xl font-serif font-bold mb-2">لوحة التحكم</h1>
+            <p className="text-muted-foreground">إدارة المحتوى القانوني والمقالات والمنشورات</p>
           </div>
 
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-8">
-            <TabsList className="grid w-full grid-cols-5 lg:w-auto">
+            <TabsList className="grid w-full grid-cols-4 lg:w-auto">
               <TabsTrigger value="blog" className="gap-2">
                 <FileText className="h-4 w-4" />
-                Blog
+                المدونة
               </TabsTrigger>
               <TabsTrigger value="news" className="gap-2">
                 <Newspaper className="h-4 w-4" />
-                News
+                الأخبار
               </TabsTrigger>
               <TabsTrigger value="books" className="gap-2">
                 <BookOpen className="h-4 w-4" />
-                Books
+                الكتب
               </TabsTrigger>
               <TabsTrigger value="updates" className="gap-2">
                 <FileText className="h-4 w-4" />
-                Updates
-              </TabsTrigger>
-              <TabsTrigger value="services" className="gap-2">
-                <Briefcase className="h-4 w-4" />
-                Services
+                التحديثات
               </TabsTrigger>
             </TabsList>
 
@@ -61,90 +313,72 @@ const Dashboard = () => {
             <TabsContent value="blog" className="space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Create New Blog Post</CardTitle>
-                  <CardDescription>Share your legal insights and expertise</CardDescription>
+                  <CardTitle>إضافة مقال جديد</CardTitle>
+                  <CardDescription>شارك خبرتك القانونية</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <form onSubmit={(e) => handleSubmit(e, "Blog post")} className="space-y-6">
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <div className="space-y-2">
-                        <Label htmlFor="blog-title-en">Title (English)</Label>
-                        <Input id="blog-title-en" placeholder="Enter title in English" required />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="blog-title-ar">Title (Arabic)</Label>
-                        <Input id="blog-title-ar" placeholder="أدخل العنوان بالعربية" required dir="rtl" />
-                      </div>
+                  <form onSubmit={handleBlogSubmit} className="space-y-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="title">العنوان</Label>
+                      <Input id="title" name="title" required />
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="blog-category">Category</Label>
-                      <Select>
-                        <SelectTrigger id="blog-category">
-                          <SelectValue placeholder="Select category" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="corporate">Corporate Law</SelectItem>
-                          <SelectItem value="commercial">Commercial Law</SelectItem>
-                          <SelectItem value="arbitration">Arbitration</SelectItem>
-                          <SelectItem value="real-estate">Real Estate</SelectItem>
-                          <SelectItem value="ip">Intellectual Property</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <Label htmlFor="category">الفئة</Label>
+                      <Input id="category" name="category" />
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="blog-type">Content Type</Label>
-                      <Select>
-                        <SelectTrigger id="blog-type">
-                          <SelectValue placeholder="Select type" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="article">Article</SelectItem>
-                          <SelectItem value="video">Video</SelectItem>
-                          <SelectItem value="insight">Quick Insight</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <Label htmlFor="content">المحتوى</Label>
+                      <Textarea id="content" name="content" className="min-h-[200px]" required />
                     </div>
 
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <div className="space-y-2">
-                        <Label htmlFor="blog-content-en">Content (English)</Label>
-                        <Textarea
-                          id="blog-content-en"
-                          placeholder="Write your content..."
-                          className="min-h-[200px]"
-                          required
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="blog-content-ar">Content (Arabic)</Label>
-                        <Textarea
-                          id="blog-content-ar"
-                          placeholder="اكتب المحتوى..."
-                          className="min-h-[200px]"
-                          required
-                          dir="rtl"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="blog-image">Featured Image</Label>
-                      <div className="flex gap-2">
-                        <Input id="blog-image" type="file" accept="image/*" />
-                        <Button type="button" variant="outline">
-                          <Upload className="h-4 w-4 mr-2" />
-                          Upload
-                        </Button>
-                      </div>
-                    </div>
-
-                    <Button type="submit" className="w-full">
-                      <Plus className="h-4 w-4 mr-2" />
-                      Publish Blog Post
-                    </Button>
+                    <Button type="submit" className="w-full">نشر المقال</Button>
                   </form>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>المقالات المنشورة</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>العنوان</TableHead>
+                        <TableHead>الفئة</TableHead>
+                        <TableHead>الحالة</TableHead>
+                        <TableHead>إجراءات</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {blogPosts.map((post) => (
+                        <TableRow key={post.id}>
+                          <TableCell>{post.title}</TableCell>
+                          <TableCell>{post.category}</TableCell>
+                          <TableCell>
+                            <div className="flex items-center gap-2">
+                              <Switch
+                                checked={post.published}
+                                onCheckedChange={() => togglePublished(post.id, 'blog_posts', post.published)}
+                              />
+                              <span>{post.published ? 'منشور' : 'مسودة'}</span>
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <Button
+                              variant="destructive"
+                              size="sm"
+                              onClick={() => handleDelete(post.id, 'blog_posts')}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
                 </CardContent>
               </Card>
             </TabsContent>
@@ -153,38 +387,72 @@ const Dashboard = () => {
             <TabsContent value="news" className="space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Add Legal News</CardTitle>
-                  <CardDescription>Keep your audience informed with latest legal developments</CardDescription>
+                  <CardTitle>إضافة خبر قانوني</CardTitle>
+                  <CardDescription>أبقِ جمهورك على اطلاع بآخر التطورات القانونية</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <form onSubmit={(e) => handleSubmit(e, "News article")} className="space-y-6">
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <div className="space-y-2">
-                        <Label htmlFor="news-title-en">Headline (English)</Label>
-                        <Input id="news-title-en" placeholder="Enter headline" required />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="news-title-ar">Headline (Arabic)</Label>
-                        <Input id="news-title-ar" placeholder="أدخل العنوان" required dir="rtl" />
-                      </div>
+                  <form onSubmit={handleNewsSubmit} className="space-y-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="news-title">العنوان</Label>
+                      <Input id="news-title" name="title" required />
                     </div>
 
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <div className="space-y-2">
-                        <Label htmlFor="news-content-en">Content (English)</Label>
-                        <Textarea id="news-content-en" className="min-h-[150px]" required />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="news-content-ar">Content (Arabic)</Label>
-                        <Textarea id="news-content-ar" className="min-h-[150px]" required dir="rtl" />
-                      </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="news-category">الفئة</Label>
+                      <Input id="news-category" name="category" />
                     </div>
 
-                    <Button type="submit" className="w-full">
-                      <Plus className="h-4 w-4 mr-2" />
-                      Publish News
-                    </Button>
+                    <div className="space-y-2">
+                      <Label htmlFor="news-content">المحتوى</Label>
+                      <Textarea id="news-content" name="content" className="min-h-[150px]" required />
+                    </div>
+
+                    <Button type="submit" className="w-full">نشر الخبر</Button>
                   </form>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>الأخبار المنشورة</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>العنوان</TableHead>
+                        <TableHead>الفئة</TableHead>
+                        <TableHead>الحالة</TableHead>
+                        <TableHead>إجراءات</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {news.map((item) => (
+                        <TableRow key={item.id}>
+                          <TableCell>{item.title}</TableCell>
+                          <TableCell>{item.category}</TableCell>
+                          <TableCell>
+                            <div className="flex items-center gap-2">
+                              <Switch
+                                checked={item.published}
+                                onCheckedChange={() => togglePublished(item.id, 'news', item.published)}
+                              />
+                              <span>{item.published ? 'منشور' : 'مسودة'}</span>
+                            </div>
+                          </TableCell>
+                          <TableCell>
+                            <Button
+                              variant="destructive"
+                              size="sm"
+                              onClick={() => handleDelete(item.id, 'news')}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
                 </CardContent>
               </Card>
             </TabsContent>
@@ -193,58 +461,69 @@ const Dashboard = () => {
             <TabsContent value="books" className="space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Add Legal Book</CardTitle>
-                  <CardDescription>Add books to your online store</CardDescription>
+                  <CardTitle>إضافة كتاب قانوني</CardTitle>
+                  <CardDescription>أضف كتب إلى المكتبة</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <form onSubmit={(e) => handleSubmit(e, "Book")} className="space-y-6">
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <div className="space-y-2">
-                        <Label htmlFor="book-title-en">Book Title (English)</Label>
-                        <Input id="book-title-en" required />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="book-title-ar">Book Title (Arabic)</Label>
-                        <Input id="book-title-ar" required dir="rtl" />
-                      </div>
-                    </div>
-
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <div className="space-y-2">
-                        <Label htmlFor="book-price">Price (AED)</Label>
-                        <Input id="book-price" type="number" placeholder="299" required />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="book-category">Category</Label>
-                        <Select>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select category" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="corporate">Corporate Law</SelectItem>
-                            <SelectItem value="commercial">Commercial Law</SelectItem>
-                            <SelectItem value="civil">Civil Law</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
+                  <form onSubmit={handleBookSubmit} className="space-y-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="book-title">عنوان الكتاب</Label>
+                      <Input id="book-title" name="title" required />
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="book-pdf">Upload PDF</Label>
-                      <div className="flex gap-2">
-                        <Input id="book-pdf" type="file" accept=".pdf" />
-                        <Button type="button" variant="outline">
-                          <Upload className="h-4 w-4 mr-2" />
-                          Upload
-                        </Button>
-                      </div>
+                      <Label htmlFor="book-author">المؤلف</Label>
+                      <Input id="book-author" name="author" required />
                     </div>
 
-                    <Button type="submit" className="w-full">
-                      <Plus className="h-4 w-4 mr-2" />
-                      Add Book to Store
-                    </Button>
+                    <div className="space-y-2">
+                      <Label htmlFor="book-category">الفئة</Label>
+                      <Input id="book-category" name="category" />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="book-description">الوصف</Label>
+                      <Textarea id="book-description" name="description" className="min-h-[120px]" />
+                    </div>
+
+                    <Button type="submit" className="w-full">إضافة الكتاب</Button>
                   </form>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>الكتب المضافة</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>العنوان</TableHead>
+                        <TableHead>المؤلف</TableHead>
+                        <TableHead>الفئة</TableHead>
+                        <TableHead>إجراءات</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {books.map((book) => (
+                        <TableRow key={book.id}>
+                          <TableCell>{book.title}</TableCell>
+                          <TableCell>{book.author}</TableCell>
+                          <TableCell>{book.category}</TableCell>
+                          <TableCell>
+                            <Button
+                              variant="destructive"
+                              size="sm"
+                              onClick={() => handleDelete(book.id, 'books')}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
                 </CardContent>
               </Card>
             </TabsContent>
@@ -253,107 +532,69 @@ const Dashboard = () => {
             <TabsContent value="updates" className="space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Law Update</CardTitle>
-                  <CardDescription>Publish updates on legal and regulatory changes</CardDescription>
+                  <CardTitle>تحديث قانوني</CardTitle>
+                  <CardDescription>نشر تحديثات حول التغييرات القانونية والتنظيمية</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <form onSubmit={(e) => handleSubmit(e, "Law update")} className="space-y-6">
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <div className="space-y-2">
-                        <Label htmlFor="update-title-en">Title (English)</Label>
-                        <Input id="update-title-en" required />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="update-title-ar">Title (Arabic)</Label>
-                        <Input id="update-title-ar" required dir="rtl" />
-                      </div>
+                  <form onSubmit={handleUpdateSubmit} className="space-y-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="update-title">العنوان</Label>
+                      <Input id="update-title" name="title" required />
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="update-jurisdiction">Jurisdiction</Label>
-                      <Select>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select jurisdiction" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="uae">UAE</SelectItem>
-                          <SelectItem value="dubai">Dubai</SelectItem>
-                          <SelectItem value="sharjah">Sharjah</SelectItem>
-                          <SelectItem value="egypt">Egypt</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <Label htmlFor="update-jurisdiction">الاختصاص القضائي</Label>
+                      <Input id="update-jurisdiction" name="jurisdiction" placeholder="الإمارات، دبي، الشارقة، مصر" />
                     </div>
 
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <div className="space-y-2">
-                        <Label htmlFor="update-content-en">Description (English)</Label>
-                        <Textarea id="update-content-en" className="min-h-[150px]" required />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="update-content-ar">Description (Arabic)</Label>
-                        <Textarea id="update-content-ar" className="min-h-[150px]" required dir="rtl" />
-                      </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="update-category">الفئة</Label>
+                      <Input id="update-category" name="category" />
                     </div>
 
-                    <Button type="submit" className="w-full">
-                      <Plus className="h-4 w-4 mr-2" />
-                      Publish Update
-                    </Button>
+                    <div className="space-y-2">
+                      <Label htmlFor="update-content">المحتوى</Label>
+                      <Textarea id="update-content" name="content" className="min-h-[150px]" required />
+                    </div>
+
+                    <Button type="submit" className="w-full">نشر التحديث</Button>
                   </form>
                 </CardContent>
               </Card>
-            </TabsContent>
 
-            {/* Services Management */}
-            <TabsContent value="services" className="space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Manage Services</CardTitle>
-                  <CardDescription>Add or edit legal services by location</CardDescription>
+                  <CardTitle>التحديثات المنشورة</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <form onSubmit={(e) => handleSubmit(e, "Service")} className="space-y-6">
-                    <div className="space-y-2">
-                      <Label htmlFor="service-location">Office Location</Label>
-                      <Select>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select office" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="dubai">Dubai</SelectItem>
-                          <SelectItem value="sharjah">Sharjah</SelectItem>
-                          <SelectItem value="egypt">Egypt</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <div className="space-y-2">
-                        <Label htmlFor="service-name-en">Service Name (English)</Label>
-                        <Input id="service-name-en" required />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="service-name-ar">Service Name (Arabic)</Label>
-                        <Input id="service-name-ar" required dir="rtl" />
-                      </div>
-                    </div>
-
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <div className="space-y-2">
-                        <Label htmlFor="service-desc-en">Description (English)</Label>
-                        <Textarea id="service-desc-en" className="min-h-[120px]" required />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="service-desc-ar">Description (Arabic)</Label>
-                        <Textarea id="service-desc-ar" className="min-h-[120px]" required dir="rtl" />
-                      </div>
-                    </div>
-
-                    <Button type="submit" className="w-full">
-                      <Plus className="h-4 w-4 mr-2" />
-                      Add Service
-                    </Button>
-                  </form>
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>العنوان</TableHead>
+                        <TableHead>الاختصاص</TableHead>
+                        <TableHead>الفئة</TableHead>
+                        <TableHead>إجراءات</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {lawUpdates.map((update) => (
+                        <TableRow key={update.id}>
+                          <TableCell>{update.title}</TableCell>
+                          <TableCell>{update.jurisdiction}</TableCell>
+                          <TableCell>{update.category}</TableCell>
+                          <TableCell>
+                            <Button
+                              variant="destructive"
+                              size="sm"
+                              onClick={() => handleDelete(update.id, 'law_updates')}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
                 </CardContent>
               </Card>
             </TabsContent>

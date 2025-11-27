@@ -14,6 +14,7 @@ import { BookOpen, FileText, Newspaper, Briefcase, Trash2, Edit } from "lucide-r
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { ImageUpload } from "@/components/ImageUpload";
 
 interface BlogPost {
   id: string;
@@ -21,6 +22,7 @@ interface BlogPost {
   content: string;
   category: string | null;
   published: boolean;
+  image_url: string | null;
   created_at: string;
 }
 
@@ -30,6 +32,7 @@ interface NewsItem {
   content: string;
   category: string | null;
   published: boolean;
+  image_url: string | null;
   created_at: string;
 }
 
@@ -39,6 +42,7 @@ interface Book {
   author: string;
   description: string | null;
   category: string | null;
+  cover_url: string | null;
   created_at: string;
 }
 
@@ -63,6 +67,11 @@ const Dashboard = () => {
   const [books, setBooks] = useState<Book[]>([]);
   const [lawUpdates, setLawUpdates] = useState<LawUpdate[]>([]);
   const [loading, setLoading] = useState(true);
+  
+  // State for image URLs
+  const [blogImageUrl, setBlogImageUrl] = useState('');
+  const [newsImageUrl, setNewsImageUrl] = useState('');
+  const [bookCoverUrl, setBookCoverUrl] = useState('');
 
   // Load data on mount
   useEffect(() => {
@@ -103,6 +112,7 @@ const Dashboard = () => {
         title: formData.get('title') as string,
         content: formData.get('content') as string,
         category: formData.get('category') as string,
+        image_url: blogImageUrl || null,
         author_id: user?.id,
         published: false,
       });
@@ -115,6 +125,7 @@ const Dashboard = () => {
       });
       
       e.currentTarget.reset();
+      setBlogImageUrl('');
       loadData();
     } catch (error) {
       console.error('Error creating blog post:', error);
@@ -135,6 +146,7 @@ const Dashboard = () => {
         title: formData.get('title') as string,
         content: formData.get('content') as string,
         category: formData.get('category') as string,
+        image_url: newsImageUrl || null,
         author_id: user?.id,
         published: false,
       });
@@ -147,6 +159,7 @@ const Dashboard = () => {
       });
       
       e.currentTarget.reset();
+      setNewsImageUrl('');
       loadData();
     } catch (error) {
       console.error('Error creating news:', error);
@@ -168,6 +181,7 @@ const Dashboard = () => {
         author: formData.get('author') as string,
         description: formData.get('description') as string,
         category: formData.get('category') as string,
+        cover_url: bookCoverUrl || null,
         added_by: user?.id,
       });
 
@@ -179,6 +193,7 @@ const Dashboard = () => {
       });
       
       e.currentTarget.reset();
+      setBookCoverUrl('');
       loadData();
     } catch (error) {
       console.error('Error adding book:', error);
@@ -328,6 +343,12 @@ const Dashboard = () => {
                       <Input id="category" name="category" />
                     </div>
 
+                    <ImageUpload 
+                      onImageUploaded={setBlogImageUrl}
+                      currentImage={blogImageUrl}
+                      label="صورة المقال"
+                    />
+
                     <div className="space-y-2">
                       <Label htmlFor="content">المحتوى</Label>
                       <Textarea id="content" name="content" className="min-h-[200px]" required />
@@ -401,6 +422,12 @@ const Dashboard = () => {
                       <Label htmlFor="news-category">الفئة</Label>
                       <Input id="news-category" name="category" />
                     </div>
+
+                    <ImageUpload 
+                      onImageUploaded={setNewsImageUrl}
+                      currentImage={newsImageUrl}
+                      label="صورة الخبر"
+                    />
 
                     <div className="space-y-2">
                       <Label htmlFor="news-content">المحتوى</Label>
@@ -480,6 +507,12 @@ const Dashboard = () => {
                       <Label htmlFor="book-category">الفئة</Label>
                       <Input id="book-category" name="category" />
                     </div>
+
+                    <ImageUpload 
+                      onImageUploaded={setBookCoverUrl}
+                      currentImage={bookCoverUrl}
+                      label="غلاف الكتاب"
+                    />
 
                     <div className="space-y-2">
                       <Label htmlFor="book-description">الوصف</Label>

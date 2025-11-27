@@ -11,7 +11,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
           {/* About */}
           <div>
-            <h3 className="text-lg md:text-xl font-serif font-bold mb-3 md:mb-4 text-accent">HZ Legal Consultancy</h3>
+            <h3 className="text-lg md:text-xl font-serif font-bold mb-3 md:mb-4 text-accent">MK Legal Consultancy</h3>
             <p className="text-sm text-white/80 leading-relaxed">
               {t('footer.description')}
             </p>
@@ -76,7 +76,7 @@ const Footer = () => {
 
         <div className="mt-8 md:mt-12 pt-6 md:pt-8 border-t border-white/10">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-white/60">
-            <p>&copy; {new Date().getFullYear()} HZ Legal Consultancy. {t('footer.copyright')}</p>
+            <p>&copy; {new Date().getFullYear()} MK Legal Consultancy. {t('footer.copyright')}</p>
             <div className="flex gap-4 md:gap-6">
               <Link to="/privacy" className="hover:text-accent transition-colors">{t('footer.privacy')}</Link>
               <Link to="/terms" className="hover:text-accent transition-colors">{t('footer.terms')}</Link>

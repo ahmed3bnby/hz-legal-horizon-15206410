@@ -22,10 +22,10 @@ const Hero = () => {
       {/* Content */}
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-3xl">
-          <h1 className="text-3xl md:text-5xl lg:text-6xl font-serif font-bold text-primary-foreground mb-4 md:mb-6 leading-tight">
+          <h1 className="text-3xl md:text-5xl lg:text-6xl font-serif font-bold text-white mb-4 md:mb-6 leading-tight">
             {t('hero.title')}
           </h1>
-          <p className="text-base md:text-xl text-primary-foreground/90 mb-6 md:mb-8 leading-relaxed">
+          <p className="text-base md:text-xl text-white/90 mb-6 md:mb-8 leading-relaxed">
             {t('hero.subtitle')}
           </p>
           <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
@@ -35,7 +35,7 @@ const Hero = () => {
                 <ArrowRight className="ml-2 rtl:ml-0 rtl:mr-2 rtl:rotate-180 h-5 w-5" />
               </Link>
             </Button>
-            <Button size="lg" variant="outline" asChild className="w-full sm:w-auto border-2 border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-navy">
+            <Button size="lg" variant="outline" asChild className="w-full sm:w-auto border-2 border-white text-white hover:bg-white hover:text-navy">
               <Link to="/services/dubai">
                 {t('services.viewAll')}
               </Link>

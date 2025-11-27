@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/hooks/useAuth";
 import LanguageSwitcher from "./LanguageSwitcher";
+import { ThemeToggle } from "./ThemeToggle";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -177,6 +178,7 @@ const Header = () => {
           </NavigationMenu>
 
           <div className="flex items-center gap-2">
+            <ThemeToggle />
             <LanguageSwitcher />
             {user ? (
               <Button variant="outline" size="sm" onClick={handleSignOut}>
@@ -193,6 +195,7 @@ const Header = () => {
 
         {/* Mobile Menu Button */}
         <div className="lg:hidden flex items-center gap-2">
+          <ThemeToggle />
           <LanguageSwitcher />
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}

@@ -14,6 +14,183 @@ export type Database = {
   }
   public: {
     Tables: {
+      blog_posts: {
+        Row: {
+          author_id: string
+          category: string | null
+          content: string
+          created_at: string
+          id: string
+          image_url: string | null
+          published: boolean
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          author_id: string
+          category?: string | null
+          content: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          published?: boolean
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          author_id?: string
+          category?: string | null
+          content?: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          published?: boolean
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      books: {
+        Row: {
+          added_by: string
+          author: string
+          category: string | null
+          cover_url: string | null
+          created_at: string
+          description: string | null
+          id: string
+          pdf_url: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          added_by: string
+          author: string
+          category?: string | null
+          cover_url?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          pdf_url?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          added_by?: string
+          author?: string
+          category?: string | null
+          cover_url?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          pdf_url?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      law_updates: {
+        Row: {
+          added_by: string
+          category: string | null
+          content: string
+          created_at: string
+          id: string
+          jurisdiction: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          added_by: string
+          category?: string | null
+          content: string
+          created_at?: string
+          id?: string
+          jurisdiction?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          added_by?: string
+          category?: string | null
+          content?: string
+          created_at?: string
+          id?: string
+          jurisdiction?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      news: {
+        Row: {
+          author_id: string
+          category: string | null
+          content: string
+          created_at: string
+          id: string
+          image_url: string | null
+          published: boolean
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          author_id: string
+          category?: string | null
+          content: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          published?: boolean
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          author_id?: string
+          category?: string | null
+          content?: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          published?: boolean
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      services: {
+        Row: {
+          category: string | null
+          created_at: string
+          description: string
+          id: string
+          image_url: string | null
+          location: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          description: string
+          id?: string
+          image_url?: string | null
+          location: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          description?: string
+          id?: string
+          image_url?: string | null
+          location?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string

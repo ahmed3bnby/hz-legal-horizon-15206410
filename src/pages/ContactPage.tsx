@@ -16,10 +16,10 @@ const ContactPage = () => {
         <section className="py-16 md:py-20 bg-gradient-hero text-primary-foreground">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold mb-4 md:mb-6 text-cream">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-bold mb-4 md:mb-6 text-white">
                 {t('contactPage.title')}
               </h1>
-              <p className="text-lg md:text-xl text-cream/90 leading-relaxed">
+              <p className="text-lg md:text-xl text-white/90 leading-relaxed">
                 {t('contactPage.subtitle')}
               </p>
             </div>

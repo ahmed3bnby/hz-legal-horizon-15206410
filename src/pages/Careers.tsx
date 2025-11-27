@@ -71,8 +71,8 @@ const Careers = () => {
         <section className="py-20 bg-gradient-hero text-primary-foreground">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center">
-              <h1 className="text-5xl md:text-6xl font-serif font-bold mb-6">Join Our Team</h1>
-              <p className="text-xl text-primary-foreground/90 leading-relaxed">
+              <h1 className="text-5xl md:text-6xl font-serif font-bold mb-6 text-white">Join Our Team</h1>
+              <p className="text-xl text-white/90 leading-relaxed">
                 Build your legal career with HZ Legal Consultancy. We're looking for talented legal professionals passionate about excellence.
               </p>
             </div>
